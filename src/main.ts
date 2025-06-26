@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import express from "express";
+import morgan from "morgan";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import audioRouter from "./modules/audio/audio.router";
 
@@ -7,6 +8,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, World!");
