@@ -1,13 +1,11 @@
 import type { Request, Express } from "express";
-import type { FileFilterCallback } from "multer";
 import multer from "multer";
 import path from "node:path";
 import fs from "node:fs";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+type FileFilterCallback = (error?: Error | null, acceptFile?: boolean) => void;
 
 const storage = multer.diskStorage({
 	destination: (req: Request, file: Express.Multer.File, cb) => {
@@ -31,7 +29,11 @@ const fileFilter = (
 ) => {
 	if (file.fieldname === "image" && file.mimetype.startsWith("image/")) {
 		cb(null, true);
-	} else if (file.fieldname === "audio" && file.mimetype.startsWith("audio/")) {
+	} else if (
+		file.fieldname === "audio" &&
+		(file.mimetype.startsWith("audio/") ||
+			file.mimetype === "application/octet-stream")
+	) {
 		cb(null, true);
 	} else {
 		cb(new Error("Unsupported file format or field"));
