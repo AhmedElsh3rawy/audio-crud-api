@@ -27,6 +27,14 @@ export const createAudio = asyncWrapper(
 	},
 );
 
+export const getAudioById = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = req.params.id;
+		const data = await Audio.findOne({ _id: id });
+		res.status(200).json({ message: "success", data });
+	},
+);
+
 export const getAudioBytitle = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const title = req.params.title;
