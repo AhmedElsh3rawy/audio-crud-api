@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import type { CreateAudioBody } from "./audio.type";
+import path from "node:path";
 import { asyncWrapper } from "../../utils/asyncWrapper";
 import { getDuration } from "../../utils/duration";
 import Audio from "./audio.model";
@@ -16,14 +17,24 @@ export const createAudio = asyncWrapper(
 		}
 		const duration = await getDuration(files.audio[0].path);
 		const data: CreateAudioBody = req.body as CreateAudioBody;
+		const audioFileName = path.basename(files.audio[0].path);
+		const imageFileName = path.basename(files.image[0].path);
+
 		const newAudio = new Audio({
 			...data,
 			duration,
+			fileUrl: `/audios/${audioFileName}`, // Store relative path
+			coverImage: `/images/${imageFileName}`, // Store relative path
 		});
-		newAudio.fileUrl = files.audio[0].path;
-		newAudio.coverImage = files.image[0].path;
 		await newAudio.save();
 		res.status(200).json({ message: "success", data: newAudio });
+	},
+);
+
+export const getAll = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const data = await Audio.find({});
+		res.status(200).json({ message: "success", data });
 	},
 );
 
