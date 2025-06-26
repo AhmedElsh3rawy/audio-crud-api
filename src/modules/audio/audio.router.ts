@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../../config/multer";
-import { createAudio } from "./audio.controller";
+import { createAudio, getAudioBytitle } from "./audio.controller";
 
 const router = Router();
 
@@ -12,5 +12,7 @@ router.post(
 	]),
 	createAudio,
 );
+
+router.get("/:title", getAudioBytitle);
 
 export default router;
