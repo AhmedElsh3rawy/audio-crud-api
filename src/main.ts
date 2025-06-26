@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import express from "express";
 import morgan from "morgan";
+import "./config/db";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import audioRouter from "./modules/audio/audio.router";
 
