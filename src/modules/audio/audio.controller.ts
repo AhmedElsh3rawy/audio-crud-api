@@ -5,7 +5,7 @@ import { asyncWrapper } from "../../utils/asyncWrapper";
 import { getDuration } from "../../utils/duration";
 import Audio from "./audio.model";
 
-export const createAudio = asyncWrapper(
+export const addOne = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const files = req.files as {
 			audio?: Express.Multer.File[];
@@ -23,8 +23,8 @@ export const createAudio = asyncWrapper(
 		const newAudio = new Audio({
 			...data,
 			duration,
-			fileUrl: `/audios/${audioFileName}`, // Store relative path
-			coverImage: `/images/${imageFileName}`, // Store relative path
+			fileUrl: `/audios/${audioFileName}`,
+			coverImage: `/images/${imageFileName}`,
 		});
 		await newAudio.save();
 		res.status(200).json({ message: "success", data: newAudio });
@@ -38,7 +38,7 @@ export const getAll = asyncWrapper(
 	},
 );
 
-export const getAudioById = asyncWrapper(
+export const getById = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = req.params.id;
 		const data = await Audio.findOne({ _id: id });
@@ -46,7 +46,7 @@ export const getAudioById = asyncWrapper(
 	},
 );
 
-export const getAudioBytitle = asyncWrapper(
+export const getBytitle = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const title = req.params.title;
 		const data = await Audio.findOne({ title: title });
