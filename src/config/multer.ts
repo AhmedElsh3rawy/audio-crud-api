@@ -3,7 +3,6 @@ import multer from "multer";
 import path from "node:path";
 import fs from "node:fs";
 import crypto from "node:crypto";
-import { fileURLToPath } from "node:url";
 
 type FileFilterCallback = (error?: Error | null, acceptFile?: boolean) => void;
 
